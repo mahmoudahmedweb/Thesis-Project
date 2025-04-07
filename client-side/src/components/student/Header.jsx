@@ -53,7 +53,7 @@ const Header = () => {
           <>
             <button
               className="text-lg font-medium hover:text-gray-900 transition-all duration-200 hover:border-b-2 hover:border-red-600"
-              onClick={() => navigate("/teacher")}
+              onClick={() => navigate("/educator")}
             >
               {isEducator ? "Teacher Dashboard" : "Join as a Teacher"}
             </button>

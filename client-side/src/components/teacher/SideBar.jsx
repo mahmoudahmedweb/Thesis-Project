@@ -14,22 +14,22 @@ const SideBar = () => {
   const menuItems = [
     {
       name: "Dashboard",
-      path: "/teacher",
+      path: "/educator",
       icon: <HomeIcon className="w-5 h-5" />,
     },
     {
       name: "Add Course",
-      path: "/teacher/add-course",
+      path: "/educator/add-course",
       icon: <PlusCircleIcon className="w-5 h-5" />,
     },
     {
       name: "My Courses",
-      path: "/teacher/my-courses",
+      path: "/educator/my-courses",
       icon: <BookOpenIcon className="w-5 h-5" />,
     },
     {
       name: "Students",
-      path: "/teacher/students-enrolled",
+      path: "/educator/students-enrolled",
       icon: <UsersIcon className="w-5 h-5" />,
     },
   ];
@@ -50,7 +50,7 @@ const SideBar = () => {
             <NavLink
               to={item.path}
               key={item.name}
-              end={item.path === "/teacher"}
+              end={item.path === "/educator"}
               className={({ isActive }) =>
                 `flex items-center px-4 py-3 text-sm font-medium rounded-lg mx-2 transition-colors duration-200 ${
                   isActive
