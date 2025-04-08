@@ -3,6 +3,7 @@ import User from "../models/User.js";
 import Stripe from "stripe";
 import { Purchase } from "../models/Purchase.js";
 import Course from "../models/Course.js";
+
 // API Controller Function to Manage Clerk User with database
 const clerkWebhook = async (req, res) => {
   try {
@@ -84,7 +85,6 @@ export const stripeWebhooks = async (request, response) => {
 
       const purchaseData = await Purchase.findById(purchaseId);
       const userData = await User.findById(purchaseData.userId);
-
       const courseData = await Course.findById(
         purchaseData.courseId.toString()
       );
@@ -93,12 +93,15 @@ export const stripeWebhooks = async (request, response) => {
       await courseData.save();
 
       userData.enrolledCourses.push(courseData._id);
-      await courseData.save();
+      await userData.save();
+
+      purchaseData.status = "completed";
+      await purchaseData.save();
 
       break;
     }
 
-    case "payment_method.payment_failed": {
+    case "payment_intent.payment_failed": {
       const paymentIntent = event.data.object;
       const paymentIntentId = paymentIntent.id;
 

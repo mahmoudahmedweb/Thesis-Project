@@ -1,10 +1,10 @@
 import mongoose from "mongoose";
 
-const purchaseSchema = new mongoose.Schema(
+const PurchaseSchema = new mongoose.Schema(
   {
     courseId: {
       type: mongoose.Schema.Types.ObjectId,
-      re: "Course",
+      ref: "Course",
       required: true,
     },
     userId: {
@@ -26,4 +26,4 @@ const purchaseSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-export const Purchase = mongoose.model("Purchase", purchaseSchema);
+export const Purchase = mongoose.model("Purchase", PurchaseSchema);
