@@ -2,6 +2,8 @@ import React from "react";
 import { useContext, useState, useEffect } from "react";
 import { AppContext } from "../../context/AppContext";
 import Loading from "../../components/student/Loading";
+import axios from "axios";
+import { toast } from "react-toastify";
 import {
   AcademicCapIcon,
   CurrencyDollarIcon,
@@ -10,18 +12,29 @@ import {
 } from "@heroicons/react/24/outline";
 
 const MyCourses = () => {
-  const { currency, allCourses } = useContext(AppContext);
+  const { currency, backendUrl, isEducator, getToken } = useContext(AppContext);
   const [courses, setCourses] = useState(null);
   const [currentPage, setCurrentPage] = useState(1);
   const coursesPerPage = 6;
 
   const fetchCourses = async () => {
-    setCourses(allCourses);
+    try {
+      const token = await getToken();
+      const { data } = await axios.get(backendUrl + "/api/educator/courses", {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+
+      data.success && setCourses(data.courses);
+    } catch (error) {
+      toast.error(error.message);
+    }
   };
 
   useEffect(() => {
-    fetchCourses();
-  }, [allCourses]);
+    if (isEducator) {
+      fetchCourses();
+    }
+  }, [isEducator]);
 
   // Get current courses for pagination
   const indexOfLastCourse = currentPage * coursesPerPage;

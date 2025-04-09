@@ -1,27 +1,41 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import Loading from "../../components/student/Loading";
-import { dummyStudentEnrolled } from "../../assets/assets";
+import { AppContext } from "../../context/AppContext";
 import {
   AcademicCapIcon,
   CalendarIcon,
   EnvelopeIcon,
 } from "@heroicons/react/24/outline";
+import axios from "axios";
+import { toast } from "react-toastify";
 
 const StudentsEnrolled = () => {
+  const { backendUrl, getToken, isEducator } = useContext(AppContext);
+
   const [enrolledStudents, setEnrolledStudents] = useState(null);
 
   const fetchEnrolledStudents = async () => {
-    // Replace this with your actual data fetching logic
-    // Example: const response = await fetch('/api/enrolled-students');
-    // const data = await response.json();
-    // setEnrolledStudents(data);
-
-    setEnrolledStudents(dummyStudentEnrolled);
+    try {
+      const token = await getToken();
+      const { data } = await axios.get(
+        backendUrl + "/api/educator/enrolled-students",
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
+      if (data.success) {
+        setEnrolledStudents(data.enrolledStudents.reverse());
+      } else {
+        toast.error(data.message);
+      }
+    } catch (error) {
+      toast.error(error.message);
+    }
   };
 
   useEffect(() => {
-    fetchEnrolledStudents();
-  }, []);
+    if (isEducator) {
+      fetchEnrolledStudents();
+    }
+  }, [isEducator]);
 
   return enrolledStudents ? (
     <div className="min-h-screen bg-gray-50 p-6">
@@ -66,7 +80,7 @@ const StudentsEnrolled = () => {
                     <div className="flex items-center">
                       <img
                         className="h-10 w-10 rounded-full object-cover"
-                        src={item.student.imageUrl}
+                        src={item.student.imageURL}
                         alt={item.student.name}
                       />
                       <div className="ml-4">

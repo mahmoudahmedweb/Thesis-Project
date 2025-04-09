@@ -14,15 +14,13 @@ const MyEnrollments = () => {
     userData,
     backendUrl,
     getToken,
-    fetchUserEnrolledCourses,
+    fetchEnrolledCourses,
   } = useContext(AppContext);
 
   const [progressArray, setProgressArray] = useState([]);
-  const [isLoading, setIsLoading] = useState(true);
 
   const getCourseProgress = async () => {
     try {
-      setIsLoading(true);
       const token = await getToken();
       const tempProgressArray = await Promise.all(
         enrolledCourses.map(async (course) => {
@@ -41,32 +39,20 @@ const MyEnrollments = () => {
       setProgressArray(tempProgressArray);
     } catch (error) {
       toast.error(error.message);
-    } finally {
-      setIsLoading(false);
     }
   };
 
   useEffect(() => {
     if (userData) {
-      fetchUserEnrolledCourses();
+      fetchEnrolledCourses();
     }
   }, [userData]);
 
   useEffect(() => {
     if (enrolledCourses.length > 0) {
       getCourseProgress();
-    } else {
-      setIsLoading(false);
     }
   }, [enrolledCourses]);
-
-  if (isLoading) {
-    return (
-      <div className="flex justify-center items-center min-h-[50vh]">
-        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500"></div>
-      </div>
-    );
-  }
 
   return (
     <div className="md:px-36 px-8 pt-10 min-h-screen">
@@ -139,7 +125,7 @@ const MyEnrollments = () => {
                         progress === 100 ? "bg-green-600" : "bg-blue-600"
                       }`}
                     >
-                      {progress === 100 ? "Completed" : "Continue"}
+                      {progress === 100 ? "Completed" : "Progressing"}
                     </button>
                   </td>
                 </tr>
