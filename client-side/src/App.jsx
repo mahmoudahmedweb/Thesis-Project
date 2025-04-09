@@ -14,12 +14,14 @@ import MyCourses from "./pages/teacher/MyCourses";
 import StudentsEnrolled from "./pages/teacher/StudentsEnrolled";
 import Header from "./components/student/Header";
 import "quill/dist/quill.snow.css";
+import { ToastContainer } from "react-toastify";
 
 const App = () => {
   const isTeacherRoute = useMatch("/teacher/*");
 
   return (
     <div className="text-default min-h-screen bg-white">
+      <ToastContainer />
       {!isTeacherRoute && <Header />}
       <Routes>
         <Route path="/" element={<Home />} />

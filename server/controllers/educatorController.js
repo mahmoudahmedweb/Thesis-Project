@@ -14,7 +14,7 @@ export const updateRoleToEducator = async (req, res) => {
     });
     res.json({
       success: true,
-      message: "User role updated to educator. You can now create courses.",
+      message: "You can now create and publish your courses.",
     });
   } catch (error) {
     res.json({
@@ -83,7 +83,7 @@ export const educatorDashboardData = async () => {
     // Calculate total earnings from purchases
     const purchases = await Purchase.find({
       courseId: { $in: courseIds },
-      status: "completed ",
+      status: "completed",
     });
 
     const totalEarnings = purchases.reduce(

@@ -34,7 +34,7 @@ const CourseCard = ({ course }) => {
         </h3>
 
         {/* Educator Name */}
-        <p className="text-sm text-gray-600">LearnSphere</p>
+        <p className="text-sm text-gray-600">{course.educator.name}</p>
 
         {/* Rating Section */}
         <div className="flex items-center space-x-2">
